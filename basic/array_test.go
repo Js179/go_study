@@ -88,3 +88,14 @@ func Test_Slice2(t *testing.T) {
 	t.Logf("sli3 = %v,\t len = %d,\t cap = %d\n", sli3, len(sli3), cap(sli3))
 	// sli2 = [0 1],	 len = 2,	 cap = 3
 }
+
+func Test_Slice3(t *testing.T) {
+	arr := [...]int{1, 2, 3, 4, 5, 6}
+	sli := arr[2:]
+	t.Logf("arr val = %v", arr)
+	// arr val = [1 2 3 4 5 6]
+	sli[0] = -1
+	t.Logf("arr val = %v", arr)
+	// arr val = [1 2 -1 4 5 6]
+	// 数组创建的切片会操作数组本身
+}
