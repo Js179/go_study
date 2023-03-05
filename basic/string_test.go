@@ -1,11 +1,28 @@
 package basic
 
 import (
+	"log"
 	"strings"
 	"testing"
+	"time"
 )
 
 var str = "i am very hungry"
+
+func safeEqual(a, b string) bool {
+	now := time.Now()
+	defer func() {
+		log.Printf("the func takes %v", time.Since(now))
+	}()
+	if len(a) != len(b) {
+		return false
+	}
+	var equal int = 0
+	for i := 0; i < len(a); i++ {
+		equal |= int(a[i]) ^ int(b[i])
+	}
+	return equal == 0
+}
 
 func Test_String(t *testing.T) {
 	t.Logf("%s %T %#v", str, str, str)
@@ -69,4 +86,9 @@ func Test_Builder(t *testing.T) {
 	builder.Reset()
 	t.Logf("str value = %s,\t len = %d,\t cap = %d", builder.String(), builder.Len(), builder.Cap())
 	// str value = ,	 len = 0,	 cap = 0
+}
+
+func Test_SafeEqual(t *testing.T) {
+	var str1, str2 = "ses中问222222222222222222222也也", "ses中问222222222222222222222也也"
+	t.Logf("val = %v", safeEqual(str1, str2))
 }
