@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 	"time"
+	"unsafe"
 )
 
 var str = "i am very hungry"
@@ -91,4 +92,43 @@ func Test_Builder(t *testing.T) {
 func Test_SafeEqual(t *testing.T) {
 	var str1, str2 = "ses中问222222222222222222222也也", "ses中问222222222222222222222也也"
 	t.Logf("val = %v", safeEqual(str1, str2))
+}
+
+func TestRune(t *testing.T) {
+	var a rune = 2
+	t.Logf("size = %d", unsafe.Sizeof(a))
+
+	var str = "Go语言"
+	t.Logf("size  = %d, len = %d", unsafe.Sizeof(str), len(str))
+
+	arr := []rune(str)
+
+	t.Logf("size  = %d, len = %d", unsafe.Sizeof(arr), len(arr))
+}
+
+func StringSliceEqual(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	if (a == nil) != (b == nil) {
+		return false
+	}
+
+	for i, v := range a {
+		if v != b[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+func TestStringSlice(t *testing.T) {
+	var a, b []string
+	a = append(a, "1,", "2", "3")
+	b = append(b, "1,", "2", "31")
+
+	equal := StringSliceEqual(a, b)
+	t.Log(equal)
 }
