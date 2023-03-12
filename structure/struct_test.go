@@ -3,6 +3,7 @@ package structure
 import (
 	"encoding/json"
 	jsoniter "github.com/json-iterator/go"
+	"sync"
 	"testing"
 )
 
@@ -110,4 +111,35 @@ func Test_JSONITER(t *testing.T) {
 	/*	var read io.Reader
 		var p People
 		err := jsonUtil.NewDecoder(read).Decode(&p)*/
+}
+
+func Test_Pool(t *testing.T) {
+	pool := sync.Pool{
+		New: func() any {
+			return new(student)
+		},
+	}
+
+	var stu = student{
+		Age:  uint(23),
+		Name: "zd",
+		Sex:  uint(0),
+		Addr: "HN",
+	}
+
+	var stu2 = student{
+		Age:  uint(230),
+		Name: "zs",
+		Sex:  uint(1),
+		Addr: "WN",
+	}
+	pool.Put(&stu)
+	pool.Put(&stu2)
+
+	var tmp = pool.Get().(*student)
+	var tmp2 = pool.Get().(*student)
+	var tmp3 = pool.Get().(*student)
+
+	t.Log(tmp, tmp2, tmp3)
+	// &{23 zd 0 HN} &{230 zs 1 WN} &{0  0 }
 }
