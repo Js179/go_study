@@ -80,3 +80,15 @@ func Test_Ref(t *testing.T) {
 	t.Logf("val = %v, len = %d, cap = %d", of, of.Len(), of.Cap())
 	// val = [23], len = 1, cap = 1
 }
+
+func Test_Field(t *testing.T) {
+	typeOf := reflect.TypeOf(people)
+	gender, ok := typeOf.FieldByName("gender")
+	if ok {
+		value, ok := gender.Tag.Lookup("json")
+		//get := gender.Tag.Get("json")
+		//t.Log(get) gender,omitempty,string
+		t.Logf("has tag of json ? %t tag = %v", ok, value)
+		// has tag of json ? true tag = gender,omitempty,string
+	}
+}
