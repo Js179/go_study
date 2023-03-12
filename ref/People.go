@@ -23,3 +23,7 @@ func (p *People) Salary() {
 func (p People) Get() {
 	fmt.Println("in get method...")
 }
+
+func (p People) SetParam(name string) {
+	p.name = name
+}
